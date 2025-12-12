@@ -1,0 +1,10 @@
+/*
+  Content-Type: application/octet-stream
+
+/*.br
+  Content-Encoding: br
+  Content-Type: application/octet-stream
+
+/*.unityweb
+  Content-Encoding: gzip
+  Content-Type: application/octet-stream
