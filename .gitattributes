@@ -1,0 +1,16 @@
+* text=auto
+*.wasm filter=lfs diff=lfs merge=lfs -text
+*.data filter=lfs diff=lfs merge=lfs -text
+*.js text
+*.html text
+*.json text
+*.br binary
+*.data.br filter=lfs diff=lfs merge=lfs -text
+*.wasm.br filter=lfs diff=lfs merge=lfs -text
+NewWebBuild/Build/*.data.br filter=lfs diff=lfs merge=lfs -text
+NewWebBuild/Build/*.wasm.br filter=lfs diff=lfs merge=lfs -text
+NewWebBuild/Build/*.wasm filter=lfs diff=lfs merge=lfs -text
+NewWebBuild/Build/*.data filter=lfs diff=lfs merge=lfs -text
+*.unityweb filter=lfs diff=lfs merge=lfs -text
+*.wasm filter=lfs diff=lfs merge=lfs -text
+*.data filter=lfs diff=lfs merge=lfs -text
