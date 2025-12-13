@@ -1,9 +1,9 @@
 const cacheName = "Ryoga4844-脱獄ごっこ-1.0.0";
 const contentToCache = [
     "Build/kyuudatsu.loader.js",
-    "Build/kyuudatsu.framework.js.unityweb",
-    "Build/kyuudatsu.data.unityweb",
-    "Build/kyuudatsu.wasm.unityweb",
+    "Build/kyuudatsu.framework.js",
+    "Build/kyuudatsu.data",
+    "Build/kyuudatsu.wasm",
     "TemplateData/style.css"
 
 ];
