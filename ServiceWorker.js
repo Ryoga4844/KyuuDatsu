@@ -1,4 +1,4 @@
-const CACHE_NAME = "datsugoku-webgl-v2";
+const CACHE_NAME = "datsugoku-webgl-v3";
 const PRECACHE_URLS = [
   "/",
   "/index.html",
@@ -44,6 +44,28 @@ self.addEventListener("fetch", (event) => {
   if (event.request.mode === "navigate") {
     event.respondWith(
       fetch(event.request).catch(() => caches.match("/index.html"))
+    );
+    return;
+  }
+
+  // Unity rebuilds often reuse the same file names, so Build assets must be
+  // refreshed from the network first or players will stay on an older build.
+  if (requestUrl.pathname.startsWith("/Build/")) {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (!networkResponse || !networkResponse.ok) {
+            return networkResponse;
+          }
+
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
+
+          return networkResponse;
+        })
+        .catch(() => caches.match(event.request))
     );
     return;
   }
