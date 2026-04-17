@@ -7,8 +7,7 @@ const PRECACHE_URLS = [
   "/icon-192.png",
   "/icon-512.png",
   "/TemplateData/style.css",
-  "/TemplateData/favicon.ico",
-  "/Build/NewWebBuild.loader.js"
+  "/TemplateData/favicon.ico"
 ];
 
 self.addEventListener("install", (event) => {

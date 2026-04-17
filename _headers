@@ -2,13 +2,22 @@
   Content-Type: application/octet-stream
   Content-Encoding: br
 
+/Build/*.data
+  Content-Type: application/octet-stream
+
 /Build/*.wasm.br
   Content-Type: application/wasm
   Content-Encoding: br
 
+/Build/*.wasm
+  Content-Type: application/wasm
+
 /Build/*.js.br
   Content-Type: application/javascript; charset=utf-8
   Content-Encoding: br
+
+/Build/*.framework.js
+  Content-Type: application/javascript; charset=utf-8
 
 /Build/*.loader.js
   Content-Type: application/javascript; charset=utf-8
