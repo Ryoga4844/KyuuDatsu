@@ -1,2 +1,20 @@
-/*
+/Build/*.data.br
   Content-Type: application/octet-stream
+  Content-Encoding: br
+
+/Build/*.wasm.br
+  Content-Type: application/wasm
+  Content-Encoding: br
+
+/Build/*.js.br
+  Content-Type: application/javascript; charset=utf-8
+  Content-Encoding: br
+
+/Build/*.loader.js
+  Content-Type: application/javascript; charset=utf-8
+
+/manifest.webmanifest
+  Content-Type: application/manifest+json; charset=utf-8
+
+/ServiceWorker.js
+  Cache-Control: no-cache

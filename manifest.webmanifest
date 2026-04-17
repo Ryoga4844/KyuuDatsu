@@ -1,15 +1,26 @@
 {
-    "name": "脱獄ごっこ",
-    "short_name": "脱獄ごっこ",
-    "start_url": "index.html",
-    "display": "fullscreen",
-    "background_color": "#231F20",
-    "theme_color": "#000",
-    "description": "",
-    "icons": [{
-      "src": "TemplateData/icons/unity-logo-dark.png",
-      "sizes": "144x144",
+  "id": "/",
+  "name": "脱獄ごっこ",
+  "short_name": "脱獄ごっこ",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#231F20",
+  "theme_color": "#231F20",
+  "description": "Unity WebGL 版の脱獄ごっこをブラウザでプレイできます。",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
-    }]
-  }
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
