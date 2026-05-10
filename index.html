@@ -47,21 +47,17 @@
 
       function resizeUnityCanvas() {
         var size = getViewportSize();
-        var maxDevicePixelRatio = isMobile ? 1.5 : 2;
-        var devicePixelRatio = Math.min(window.devicePixelRatio || 1, maxDevicePixelRatio);
-        var renderWidth = Math.max(1, Math.floor(size.width * devicePixelRatio));
-        var renderHeight = Math.max(1, Math.floor(size.height * devicePixelRatio));
 
         document.documentElement.style.setProperty("--app-height", size.height + "px");
+        document.body.style.width = size.width + "px";
+        document.body.style.height = size.height + "px";
+        container.style.left = "0px";
+        container.style.top = "0px";
         container.style.width = size.width + "px";
         container.style.height = size.height + "px";
         canvas.style.width = size.width + "px";
         canvas.style.height = size.height + "px";
-
-        if (canvas.width !== renderWidth || canvas.height !== renderHeight) {
-          canvas.width = renderWidth;
-          canvas.height = renderHeight;
-        }
+        window.scrollTo(0, 0);
       }
 
       window.addEventListener("resize", resizeUnityCanvas, { passive: true });
@@ -112,8 +108,7 @@
         productName: "脱獄ごっこ",
         productVersion: "1.0.0",
         showBanner: unityShowBanner,
-        matchWebGLToCanvasSize: false,
-        devicePixelRatio: 1
+        devicePixelRatio: isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2)
       };
 
       document.querySelector("#unity-loading-bar").style.display = "block";
