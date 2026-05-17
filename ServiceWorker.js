@@ -1,4 +1,4 @@
-const CACHE_NAME = "datsugoku-webgl-v3";
+const CACHE_NAME = "datsugoku-webgl-v4";
 const PRECACHE_URLS = [
   "/",
   "/index.html",
