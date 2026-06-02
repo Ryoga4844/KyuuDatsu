@@ -29,7 +29,9 @@
     <script>
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", function () {
-          navigator.serviceWorker.register("./ServiceWorker.js").catch(function () {});
+          navigator.serviceWorker.register("./ServiceWorker.js").then(function (registration) {
+            registration.update();
+          }).catch(function () {});
         });
       }
 

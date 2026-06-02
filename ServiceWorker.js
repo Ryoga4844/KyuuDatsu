@@ -1,4 +1,4 @@
-const CACHE_NAME = "datsugoku-webgl-v5";
+const CACHE_NAME = "datsugoku-webgl-20260602231715";
 const PRECACHE_URLS = [
   "/",
   "/index.html",
@@ -9,6 +9,14 @@ const PRECACHE_URLS = [
   "/TemplateData/style.css",
   "/TemplateData/favicon.ico"
 ];
+// BUILD_CACHE_URLS_START
+PRECACHE_URLS.push(...["/Build/WebGLBuild.data",
+  "/Build/WebGLBuild.framework.js",
+  "/Build/WebGLBuild.loader.js",
+  "/Build/WebGLBuild.wasm",
+  "/StreamingAssets/UnityServicesProjectConfiguration.json",
+  "/TemplateData/style.css"]);
+// BUILD_CACHE_URLS_END
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -42,7 +50,18 @@ self.addEventListener("fetch", (event) => {
 
   if (event.request.mode === "navigate") {
     event.respondWith(
-      fetch(event.request).catch(() => caches.match("/index.html"))
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.ok) {
+            const responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put("/index.html", responseToCache);
+            });
+          }
+
+          return networkResponse;
+        })
+        .catch(() => caches.match("/index.html"))
     );
     return;
   }
@@ -90,3 +109,4 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
+
