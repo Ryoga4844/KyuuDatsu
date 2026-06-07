@@ -27,6 +27,14 @@
       </div>
     </div>
     <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker.register("./ServiceWorker.js").then(function (registration) {
+            registration.update();
+          }).catch(function () {});
+        });
+      }
+
       var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
       var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -127,83 +135,32 @@
         devicePixelRatio: 1
       };
 
-      function startUnity() {
-        document.querySelector("#unity-loading-bar").style.display = "block";
+      document.querySelector("#unity-loading-bar").style.display = "block";
 
-        var script = document.createElement("script");
-        script.src = loaderUrl;
-        script.onload = () => {
-          createUnityInstance(canvas, config, (progress) => {
-            document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
-          }).then((unityInstance) => {
-            document.querySelector("#unity-loading-bar").style.display = "none";
-            resizeUnityCanvas();
-            var resizeInterval = setInterval(resizeUnityCanvas, 250);
-            setTimeout(function () { clearInterval(resizeInterval); }, 3000);
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
+        }).then((unityInstance) => {
+          document.querySelector("#unity-loading-bar").style.display = "none";
+          resizeUnityCanvas();
+          var resizeInterval = setInterval(resizeUnityCanvas, 250);
+          setTimeout(function () { clearInterval(resizeInterval); }, 3000);
 
-            var fullscreenButton = document.querySelector("#unity-fullscreen-button");
-            if (fullscreenButton != null) {
-              fullscreenButton.onclick = () => {
-                unityInstance.SetFullscreen(1);
-              };
-            }
-
-          }).catch((message) => {
-            alert(message);
-          });
-        };
-
-        document.body.appendChild(script);
-      }
-
-      function registerServiceWorker() {
-        if (!("serviceWorker" in navigator)) {
-          startUnity();
-          return;
-        }
-
-        var reloadedForUpdate = false;
-        navigator.serviceWorker.addEventListener("controllerchange", function () {
-          if (reloadedForUpdate) {
-            return;
+          var fullscreenButton = document.querySelector("#unity-fullscreen-button");
+          if (fullscreenButton != null) {
+            fullscreenButton.onclick = () => {
+              unityInstance.SetFullscreen(1);
+            };
           }
 
-          reloadedForUpdate = true;
-          window.location.reload();
+        }).catch((message) => {
+          alert(message);
         });
+      };
 
-        navigator.serviceWorker.register("./ServiceWorker.js", { scope: "./" })
-          .then(function (registration) {
-            registration.update();
-
-            if (registration.waiting) {
-              registration.waiting.postMessage({ type: "SKIP_WAITING" });
-            }
-
-            registration.addEventListener("updatefound", function () {
-              var installing = registration.installing;
-              if (!installing) {
-                return;
-              }
-
-              installing.addEventListener("statechange", function () {
-                if (installing.state === "installed" && navigator.serviceWorker.controller) {
-                  installing.postMessage({ type: "SKIP_WAITING" });
-                }
-              });
-            });
-
-            return navigator.serviceWorker.ready;
-          })
-          .then(function () {
-            startUnity();
-          })
-          .catch(function () {
-            startUnity();
-          });
-      }
-
-      registerServiceWorker();
+      document.body.appendChild(script);
     </script>
   </body>
 </html>

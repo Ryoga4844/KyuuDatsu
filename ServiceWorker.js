@@ -1,4 +1,4 @@
-const CACHE_NAME = "datsugoku-webgl-PLACEHOLDER";
+const CACHE_NAME = "datsugoku-webgl-20260602231715";
 const PRECACHE_URLS = [
   "/",
   "/index.html",
@@ -10,13 +10,18 @@ const PRECACHE_URLS = [
   "/TemplateData/favicon.ico"
 ];
 // BUILD_CACHE_URLS_START
-PRECACHE_URLS.push(...[]);
+PRECACHE_URLS.push(...["/Build/WebGLBuild.data",
+  "/Build/WebGLBuild.framework.js",
+  "/Build/WebGLBuild.loader.js",
+  "/Build/WebGLBuild.wasm",
+  "/StreamingAssets/UnityServicesProjectConfiguration.json",
+  "/TemplateData/style.css"]);
 // BUILD_CACHE_URLS_END
 
-const OFFLINE_CRITICAL_PATHS = ["/Build/", "/StreamingAssets/"];
-
 self.addEventListener("install", (event) => {
-  event.waitUntil(precacheAll(PRECACHE_URLS));
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE_URLS))
+  );
   self.skipWaiting();
 });
 
@@ -33,12 +38,6 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
-self.addEventListener("message", (event) => {
-  if (event.data && event.data.type === "SKIP_WAITING") {
-    self.skipWaiting();
-  }
-});
-
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") {
     return;
@@ -50,152 +49,64 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (event.request.mode === "navigate") {
-    event.respondWith(handleNavigateRequest(event.request));
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.ok) {
+            const responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put("/index.html", responseToCache);
+            });
+          }
+
+          return networkResponse;
+        })
+        .catch(() => caches.match("/index.html"))
+    );
     return;
   }
 
-  if (isOfflineCriticalPath(requestUrl.pathname)) {
-    event.respondWith(handleCriticalAssetRequest(event.request));
+  // Unity rebuilds often reuse the same file names, so Build assets must be
+  // refreshed from the network first or players will stay on an older build.
+  if (requestUrl.pathname.startsWith("/Build/")) {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (!networkResponse || !networkResponse.ok) {
+            return networkResponse;
+          }
+
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
+
+          return networkResponse;
+        })
+        .catch(() => caches.match(event.request))
+    );
     return;
   }
 
-  event.respondWith(handleDefaultRequest(event.request));
-});
+  event.respondWith(
+    caches.match(event.request).then((cachedResponse) => {
+      if (cachedResponse) {
+        return cachedResponse;
+      }
 
-function isOfflineCriticalPath(pathname) {
-  for (let i = 0; i < OFFLINE_CRITICAL_PATHS.length; i++) {
-    if (pathname.startsWith(OFFLINE_CRITICAL_PATHS[i])) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-function createCacheableRequest(request) {
-  return new Request(request.url, {
-    method: "GET",
-    headers: request.headers,
-    credentials: request.credentials,
-    mode: request.mode,
-    redirect: request.redirect,
-    referrer: request.referrer,
-    integrity: request.integrity
-  });
-}
-
-async function sanitizeResponseForCache(response) {
-  const headers = new Headers(response.headers);
-  headers.delete("cache-control");
-  headers.delete("pragma");
-  headers.delete("expires");
-
-  return new Response(await response.blob(), {
-    status: response.status,
-    statusText: response.statusText,
-    headers
-  });
-}
-
-async function putInCache(request, response) {
-  const cache = await caches.open(CACHE_NAME);
-  const cacheableResponse = await sanitizeResponseForCache(response);
-  await cache.put(request, cacheableResponse);
-}
-
-async function matchCached(request) {
-  const cache = await caches.open(CACHE_NAME);
-  const cached = await cache.match(request);
-  if (cached) {
-    return cached;
-  }
-
-  const url = new URL(request.url);
-  return cache.match(url.pathname);
-}
-
-async function precacheAll(urls) {
-  const uniqueUrls = [...new Set(urls)];
-  const cache = await caches.open(CACHE_NAME);
-
-  await Promise.all(
-    uniqueUrls.map(async (url) => {
-      try {
-        const response = await fetch(url, { cache: "reload" });
-        if (!response || !response.ok) {
-          console.warn("[SW] precache skipped:", url, response && response.status);
-          return;
+      return fetch(event.request).then((networkResponse) => {
+        if (!networkResponse || !networkResponse.ok) {
+          return networkResponse;
         }
 
-        const cacheableResponse = await sanitizeResponseForCache(response);
-        await cache.put(url, cacheableResponse);
-      } catch (error) {
-        console.warn("[SW] precache failed:", url, error);
-      }
+        const responseToCache = networkResponse.clone();
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, responseToCache);
+        });
+
+        return networkResponse;
+      });
     })
   );
-}
+});
 
-async function handleNavigateRequest(request) {
-  const cache = await caches.open(CACHE_NAME);
-
-  try {
-    const networkResponse = await fetch(request);
-    if (networkResponse && networkResponse.ok) {
-      const cacheableResponse = await sanitizeResponseForCache(networkResponse);
-      await cache.put("/index.html", cacheableResponse);
-      await cache.put("/", cacheableResponse);
-    }
-
-    return networkResponse;
-  } catch (error) {
-    return (
-      (await cache.match("/index.html")) ||
-      (await cache.match("/")) ||
-      (await cache.match(request)) ||
-      Response.error()
-    );
-  }
-}
-
-async function handleCriticalAssetRequest(request) {
-  const cached = await matchCached(request);
-  const networkRequest = createCacheableRequest(request);
-
-  try {
-    const networkResponse = await fetch(networkRequest);
-    if (!networkResponse || !networkResponse.ok) {
-      return cached || networkResponse;
-    }
-
-    await putInCache(request, networkResponse);
-    return networkResponse;
-  } catch (error) {
-    if (cached) {
-      return cached;
-    }
-
-    throw error;
-  }
-}
-
-async function handleDefaultRequest(request) {
-  const cached = await matchCached(request);
-  if (cached) {
-    return cached;
-  }
-
-  const networkRequest = createCacheableRequest(request);
-
-  try {
-    const networkResponse = await fetch(networkRequest);
-    if (!networkResponse || !networkResponse.ok) {
-      return networkResponse;
-    }
-
-    await putInCache(request, networkResponse);
-    return networkResponse;
-  } catch (error) {
-    return cached || Response.error();
-  }
-}
