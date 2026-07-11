@@ -1,4 +1,4 @@
-const CACHE_NAME = "datsugoku-webgl-20260623";
+﻿const CACHE_NAME = "datsugoku-webgl-20260711114030";
 
 const PRECACHE_URLS = [
     "/",
@@ -12,12 +12,22 @@ const PRECACHE_URLS = [
 ];
 
 // BUILD_CACHE_URLS_START
-PRECACHE_URLS.push(
-    "/Build/WebGLBuild.data",
-    "/Build/WebGLBuild.framework.js",
-    "/Build/WebGLBuild.loader.js",
-    "/Build/WebGLBuild.wasm"
-);
+PRECACHE_URLS.push(...["/Build/WebGLBuild.data",
+  "/Build/WebGLBuild.framework.js",
+  "/Build/WebGLBuild.loader.js",
+  "/Build/WebGLBuild.wasm",
+  "/StreamingAssets/UnityServicesProjectConfiguration.json",
+  "/TemplateData/favicon.ico",
+  "/TemplateData/icons/unity-logo-dark.png",
+  "/TemplateData/icons/unity-logo-light.png",
+  "/TemplateData/progress-bar-empty-dark.png",
+  "/TemplateData/progress-bar-empty-light.png",
+  "/TemplateData/progress-bar-full-dark.png",
+  "/TemplateData/progress-bar-full-light.png",
+  "/TemplateData/style.css",
+  "/TemplateData/unity-logo-dark.png",
+  "/TemplateData/unity-logo-light.png",
+  "/TemplateData/webmemd-icon.png"]);
 // BUILD_CACHE_URLS_END
 
 self.addEventListener("install", (event) => {
