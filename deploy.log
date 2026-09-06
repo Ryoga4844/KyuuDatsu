@@ -1,0 +1,55 @@
+[2026-08-06T12:52:37.743Z] ----------------------------------------------------------------------
+[2026-08-06T12:52:37.746Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\user\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --debug
+[2026-08-06T12:52:37.747Z] CLI Version:   15.25.1
+[2026-08-06T12:52:37.747Z] Platform:      win32
+[2026-08-06T12:52:37.747Z] Node Version:  v24.18.0
+[2026-08-06T12:52:37.748Z] Detected Agent: unknown
+[2026-08-06T12:52:37.748Z] Time:          Thu Aug 06 2026 21:52:37 GMT+0900 (譌･譛ｬ讓呎ｺ匁凾)
+[2026-08-06T12:52:37.748Z] ----------------------------------------------------------------------
+
+[2026-08-06T12:52:40.785Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[2026-08-06T12:52:40.786Z] > authorizing via signed-in user (ryoga4844@gmail.com)
+[2026-08-06T12:52:40.786Z] [iam] checking project kyuudatsu-web2 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[2026-08-06T12:52:40.807Z] Checked if tokens are valid: true, expires at: 1786024073047
+[2026-08-06T12:52:40.807Z] Checked if tokens are valid: true, expires at: 1786024073047
+[2026-08-06T12:52:40.809Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/kyuudatsu-web2:testIamPermissions [none]
+[2026-08-06T12:52:40.809Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/kyuudatsu-web2:testIamPermissions  x-goog-user-project=kyuudatsu-web2
+[2026-08-06T12:52:40.809Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/kyuudatsu-web2:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[2026-08-06T12:52:41.636Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/kyuudatsu-web2:testIamPermissions 200
+[2026-08-06T12:52:41.637Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/kyuudatsu-web2:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[2026-08-06T12:52:41.639Z] Checked if tokens are valid: true, expires at: 1786024073047
+[2026-08-06T12:52:41.639Z] Checked if tokens are valid: true, expires at: 1786024073047
+[2026-08-06T12:52:41.639Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/kyuudatsu-web2 [none]
+[2026-08-06T12:52:42.232Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/kyuudatsu-web2 200
+[2026-08-06T12:52:42.232Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/kyuudatsu-web2 {"projectId":"kyuudatsu-web2","projectNumber":"975940160699","displayName":"KyuuDatsu","name":"projects/kyuudatsu-web2","resources":{"hostingSite":"kyuudatsu-web2"},"state":"ACTIVE","labels":{"firebase":"enabled"},"etag":"1_4eaebe2d-1ea6-4b25-aadf-3657ccf5b772"}
+
+=== Deploying to 'kyuudatsu-web2'...
+
+i  deploying hosting 
+[2026-08-06T12:52:42.238Z] Checked if tokens are valid: true, expires at: 1786024073047
+[2026-08-06T12:52:42.238Z] Checked if tokens are valid: true, expires at: 1786024073047
+[2026-08-06T12:52:42.238Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/kyuudatsu-web2/sites/kyuudatsu-web2 [none]
+[2026-08-06T12:52:43.252Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/kyuudatsu-web2/sites/kyuudatsu-web2 200
+[2026-08-06T12:52:43.252Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/kyuudatsu-web2/sites/kyuudatsu-web2 {"name":"projects/kyuudatsu-web2/sites/kyuudatsu-web2","defaultUrl":"https://kyuudatsu-web2.web.app","type":"DEFAULT_SITE"}
+[2026-08-06T12:52:43.263Z] Checked if tokens are valid: true, expires at: 1786024073047
+[2026-08-06T12:52:43.263Z] Checked if tokens are valid: true, expires at: 1786024073047
+[2026-08-06T12:52:43.265Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/kyuudatsu-web2/versions [none]
+[2026-08-06T12:52:43.265Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/kyuudatsu-web2/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
+[2026-08-06T12:52:43.711Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/kyuudatsu-web2/versions 429
+[2026-08-06T12:52:43.711Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/kyuudatsu-web2/versions {"error":{"code":429,"message":"You have exceeded the Hosting storage quota for your Firebase project, so you cannot deploy to your site right now. Visit the Firebase console to either manage your Hosting storage or upgrade to the Blaze plan.\n \nTip: Manage your Hosting storage by setting the number of releases to keep for each channel so that older releases are automatically deleted. Learn more: https://firebase.google.com/docs/hosting/manage-releases#release-storage-settings","status":"RESOURCE_EXHAUSTED"}}
+
+Error: Request to https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/kyuudatsu-web2/versions had HTTP Error: 429, You have exceeded the Hosting storage quota for your Firebase project, so you cannot deploy to your site right now. Visit the Firebase console to either manage your Hosting storage or upgrade to the Blaze plan.
+ 
+Tip: Manage your Hosting storage by setting the number of releases to keep for each channel so that older releases are automatically deleted. Learn more: https://firebase.google.com/docs/hosting/manage-releases#release-storage-settings
+[2026-08-06T12:52:43.916Z] Error Context: {
+  "body": {
+    "error": {
+      "code": 429,
+      "message": "You have exceeded the Hosting storage quota for your Firebase project, so you cannot deploy to your site right now. Visit the Firebase console to either manage your Hosting storage or upgrade to the Blaze plan.\n \nTip: Manage your Hosting storage by setting the number of releases to keep for each channel so that older releases are automatically deleted. Learn more: https://firebase.google.com/docs/hosting/manage-releases#release-storage-settings",
+      "status": "RESOURCE_EXHAUSTED"
+    }
+  },
+  "response": {
+    "statusCode": 429
+  }
+}

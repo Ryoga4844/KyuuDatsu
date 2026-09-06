@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = "datsugoku-webgl-20260725200120";
+﻿const CACHE_NAME = "datsugoku-webgl-20260806214745";
 
 const PRECACHE_URLS = [
     "/",
@@ -105,6 +105,12 @@ self.addEventListener("fetch", (event) => {
             })
     );
 });
+
+
+
+
+
+
 
 
 

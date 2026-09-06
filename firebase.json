@@ -1,0 +1,14 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "deploy.log",
+      "*.log",
+      "**/*.log",
+      "**/.*",
+      "**/.git/**",
+      "**/node_modules/**"
+    ]
+  }
+}
